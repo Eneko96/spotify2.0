@@ -5,8 +5,9 @@ const scopes = [
   'playlist-read-private',
   'playlist-read-collaborative',
   'streaming',
+  'user-top-read',
   'user-read-private',
-  'user-libary-read',
+  'user-library-read',
   'user-read-playback-state',
   'user-modify-playback-state',
   'user-read-currently-playing',
@@ -19,7 +20,6 @@ const params = {
 }
 
 const queryParamString = new URLSearchParams(params)
-
 const LOGIN_URL = `https://accounts.spotify.com/authorize?${queryParamString.toString()}`
 
 const spotifyApi = new SpotifyWebApi({

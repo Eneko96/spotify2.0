@@ -1,6 +1,31 @@
-import { LOGIN_URL } from 'lib/spotify'
+import spotifyApi, { LOGIN_URL } from '../../../lib/spotify'
 import NextAuth from 'next-auth/next'
 import SpotifyProvider from 'next-auth/providers/spotify'
+import { JWT } from 'next-auth/jwt'
+
+async function refreshAccessToken (token: JWT) {
+  try {
+    spotifyApi.setAccessToken(token.accessToken as string)
+    spotifyApi.setRefreshToken(token.refreshToken as string)
+
+    const { body: refreshedToken } = await spotifyApi.refreshAccessToken()
+
+    console.log('Refreshed token:', refreshedToken)
+
+    return {
+      ...token,
+      accessToken: refreshedToken.access_token,
+      accessTokenExpires: Date.now() + refreshedToken.expires_in * 1000,
+      refreshToken: refreshedToken.refresh_token ?? token.refreshToken
+    }
+  } catch (error) {
+    console.error(error)
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError'
+    }
+  }
+}
 
 export default NextAuth({
   providers: [
@@ -10,7 +35,7 @@ export default NextAuth({
       authorization: LOGIN_URL
     })
   ],
-  secret: process.env.JWT_SECRET as string,
+  secret: process.env.JWT_SECRET,
   pages: {
     signIn: '/login'
   },
@@ -70,13 +95,28 @@ export default NextAuth({
       }
 
       // Return previous token if acc token not expired
-      if (Date.now() < token.accessTokenExpires) {
+      if (Date.now() < (token.accessTokenExpires as number)) {
         return token
       }
 
       // acc token expiredm refresh token
       console.log('ACC TOKEN EXPIRED')
       return await refreshAccessToken(token)
+    },
+
+    async session ({ session, token }) {
+      // ignore ts error
+      // @ts-ignore
+      session.user.accessToken = token.accessToken
+      // ignore ts error
+      // @ts-ignore
+      session.user.refreshToken = token.refreshToken
+      // ignore ts error
+      // @ts-ignore
+      session.user.username = token.username
+
+      return session
     }
   }
+
 })
