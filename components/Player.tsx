@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { currentTrackIdState, isPlayingState } from 'atoms/songAtom'
 import useSongInfo from 'hooks/useSongInfo'
 import useSpotify from 'hooks/useSpotify'
@@ -10,7 +11,7 @@ import { debounce } from 'lodash'
 
 export default function Player () {
   const spotifyApi = useSpotify()
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const [currentTrackId, setCurrentIdTrack] = useRecoilState(currentTrackIdState)
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState)
   const [volume, setVolume] = useState(50)

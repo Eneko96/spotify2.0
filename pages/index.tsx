@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Sidebar from 'components/Sidebar'
 import Center from '@components/Center'
@@ -13,13 +13,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className='flex'>
-        {/* Sidebar */}
         <Sidebar />
-        {/* Center */}
         <Center />
       </main>
       <div className='sticky bottom-0'>
-        {/* Player */}
         <Player />
       </div>
     </div>
@@ -28,7 +25,7 @@ const Home: NextPage = () => {
 
 export default Home
 
-export async function getServerSideProps (context) {
+export async function getServerSideProps (context: GetServerSidePropsContext) {
   const session = await getSession(context)
 
   return {

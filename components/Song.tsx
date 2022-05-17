@@ -1,12 +1,14 @@
+// @ts-nocheck
 import useSpotify from 'hooks/useSpotify'
 import { millisToMinutesAndSeconds } from 'lib/time'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { currentTrackIdState, isPlayingState } from 'atoms/songAtom'
+import SpotifyApi from 'lib/spotify'
 
-export default function Song ({ order, track }) {
+export default function Song ({ order, track }: { order: number, track: SpotifyApi.PlaylistTrack }) {
   const spotifyApi = useSpotify()
-  const [currentTrackId, setCurrentTrackId] = useRecoilState(currentTrackIdState)
-  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState)
+  const setCurrentTrackId = useSetRecoilState(currentTrackIdState)
+  const setIsPlaying = useSetRecoilState(isPlayingState)
 
   const playSong = () => {
     setCurrentTrackId(track.track.id)

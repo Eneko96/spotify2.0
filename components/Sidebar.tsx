@@ -7,11 +7,12 @@ import useSpotify from 'hooks/useSpotify'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
+import SpotifyApi from 'lib/spotify'
 
 export default function Sidebar () {
   const { data: session } = useSession()
-  const [playlists, setPlaylists] = useState([])
-  const [playlistId, setPlaylistId] = useRecoilState(playlistIdState)
+  const [playlists, setPlaylists] = useState<SpotifyApi.PlaylistObjectSimplified[]>([])
+  const [, setPlaylistId] = useRecoilState(playlistIdState)
   const spotifyApi = useSpotify()
 
   useEffect(() => {

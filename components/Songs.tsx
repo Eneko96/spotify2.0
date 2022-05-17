@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { playlistState } from 'atoms/playlistAtoms'
 import { useRecoilValue } from 'recoil'
 import Song from './Song'
