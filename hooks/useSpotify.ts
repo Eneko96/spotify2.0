@@ -16,7 +16,8 @@ export default function useSpotify () {
         console.log('error here <<<<>>>>')
         signIn()
       }
-      spotifyApi.setAccessToken(session.user.accessToken)
+      // @ts-ignore
+      spotifyApi.setAccessToken(session?.user?.accessToken)
     }
   }, [session])
 
