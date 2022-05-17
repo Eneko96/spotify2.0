@@ -16,7 +16,6 @@ export default function login ({ providers = {} }: {providers: any}) {
 }
 
 export async function getServerSideProps () {
-  console.log('hola')
   const providers = await getProviders()
 
   return {
